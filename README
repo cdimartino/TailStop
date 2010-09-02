@@ -1,1 +1,9 @@
 A better tail -f.  Now with Python power.
+
+Call with two arguments:
+
+tailstop.py <watch word> <file>
+
+Tailstop will follow the file by name, so logrotate will not cause you to tail a dead file.
+
+Hit <CTRL-c> to change the watch word.  If you want to exit, hit <CTRL-c> again.
