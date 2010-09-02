@@ -12,6 +12,7 @@ class TailStop:
     file = open(self.filename)
     current_inode = os.stat(self.filename)[stat.ST_INO]
 
+    stop = False
     while True:
       try:
         this_inode = None
@@ -29,24 +30,30 @@ class TailStop:
           file.seek(where)
         else:
           matches = self.matcher(self.watch, line)
-          if matches:
-            i = 0
-            for m in matches:
-              self.write( line[i:m.start()] )
-              self.write( self.color(line[m.start():m.end()]) )
-              i = m.end()
-            self.write(line[i:])
-
+          if matches or stop:
             cont = False
+            if matches:
+              i = 0
+              for m in matches:
+                self.write( line[i:m.start()] )
+                self.write( self.color(line[m.start():m.end()]) )
+                i = m.end()
+              self.write(line[i:])
+
             while cont is False:
-              response = raw_input("\nPlease press <enter> to continue, 'G' to go to end of file, or any phrase to change the match string: ")
-              if response == "":
+              response = raw_input("\n<c>ontinue | <n>ext | <G>o to end: ")
+              if response == "c":
                 cont = True
+                stop = False
               elif response == "G":
-                file.seek(0, os.SEEK_END)
+                file.seek(1, 2)
                 cont = True
-              else:
-                watch = response
+                stop = False
+                self.write(line)
+              elif response == '':
+                stop = True
+                cont = True
+                self.write(line)
           else:
             self.write(line)
       except KeyboardInterrupt:
