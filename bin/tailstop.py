@@ -22,5 +22,5 @@ while True:
         response = raw_input("Please press <enter> to continue, 'G' to go to end of file: ")
         if response == '':
           cont = True
-        elif response == 'e':
+        elif response == 'G':
           file.seek(0, os.SEEK_END)
