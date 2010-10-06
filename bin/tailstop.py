@@ -6,6 +6,7 @@ import time
 import os
 import stat
 import signal
+import readline
 
 class TailStop:
   def tail(self):
@@ -41,15 +42,21 @@ class TailStop:
               self.write(line[i:])
 
             while cont is False:
-              response = raw_input("\n<c>ontinue | <n>ext | <G>o to end: ")
+              if stop == False:
+                response = raw_input("\n<c>ontinue <e>nd <q>uit [<n>ext]: ")
+              else:
+                response = raw_input('->> ')
+
               if response == "c":
                 cont = True
                 stop = False
-              elif response == "G":
+              elif response == "e":
                 file.seek(1, 2)
                 cont = True
                 stop = False
                 self.write(line)
+              elif response == 'q':
+                sys.exit(0)
               elif response == '':
                 stop = True
                 cont = True
@@ -73,7 +80,7 @@ class TailStop:
 
   def handle_change_watch(self):
     try:
-      watch = raw_input("Enter <ctrl-c> again to quit.  Enter new search string: ")
+      watch = raw_input("\nEnter <ctrl-c> again to quit.  Enter new search string: ")
       self.write("Setting new watch parameter to: %s\n" % watch)
       self.watch = watch
     except KeyboardInterrupt:
