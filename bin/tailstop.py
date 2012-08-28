@@ -73,7 +73,7 @@ class TailStop:
     return None
 
   def color(self, what):
-    return "[0;31;40m%s[0;37;40m" % what
+    return "[0;31;40m%s[0;37;40m[00m" % what
 
   def write(self, what):
     sys.stdout.write( what )
